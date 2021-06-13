@@ -2,13 +2,13 @@ specVersion: 0.0.2
 description: Farm Viewer for Polygon
 repository: https://github.com/crispymangoes/farm-subgraph
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: Gravity
     network: matic
     source:
-      address: '0xFa56a0f01863c034b55e904C9c39213E44D92Af7'
+      address: "0xFa56a0f01863c034b55e904C9c39213E44D92Af7"
       abi: GFI_Farm
       startBlock: 14692447
     mapping:
@@ -19,10 +19,10 @@ dataSources:
         - Farmer
       abis:
         - name: GFI_Farm
-          file: ./abis/GFI_Farm.json
+          file: Gravity/abis/GFI_Farm.json
       eventHandlers:
         - event: Deposit(indexed address,uint256)
           handler: handleDeposit
         - event: Withdraw(indexed address,uint256)
           handler: handleWithdraw
-      file: ./src/mapping.ts
+      file: Gravity/Gravity.wasm

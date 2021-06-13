@@ -1,22 +1,25 @@
-import { NewGravatar, UpdatedGravatar } from '../generated/Gravity/Gravity'
-import { Gravatar } from '../generated/schema'
+import { BigDecimal } from '@graphprotocol/graph-ts'
+import { Deposit, Withdraw } from '../generated/Gravity/GFI_Farm'
+import { Farmer } from '../generated/schema'
 
-export function handleNewGravatar(event: NewGravatar): void {
-  let gravatar = new Gravatar(event.params.id.toHex())
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
+export function handleDeposit(event: Deposit): void {
+  let id = event.params.user.toHex()
+  let farmer = Farmer.load(id)
+  if (farmer == null) {
+    farmer = new Farmer(id)
+  }
+  farmer.user = event.params.user
+  farmer.amountIn = new BigDecimal(event.params.amount)
+  farmer.save()
 }
 
-export function handleUpdatedGravatar(event: UpdatedGravatar): void {
-  let id = event.params.id.toHex()
-  let gravatar = Gravatar.load(id)
-  if (gravatar == null) {
-    gravatar = new Gravatar(id)
+export function handleWithdraw(event: Withdraw): void {
+  let id = event.params.user.toHex()
+  let farmer = Farmer.load(id)
+  if (farmer == null) {
+    farmer = new Farmer(id)
   }
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
+  farmer.user = event.params.user
+  farmer.amountOut = new BigDecimal(event.params.amount)
+  farmer.save()
 }
