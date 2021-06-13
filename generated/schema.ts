@@ -51,21 +51,20 @@ export class Farmer extends Entity {
     this.set("user", Value.fromBytes(value));
   }
 
-  get amountIn(): BigDecimal {
-    let value = this.get("amountIn");
-    return value.toBigDecimal();
+  get amount(): BigInt | null {
+    let value = this.get("amount");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set amountIn(value: BigDecimal) {
-    this.set("amountIn", Value.fromBigDecimal(value));
-  }
-
-  get amountOut(): BigDecimal {
-    let value = this.get("amountOut");
-    return value.toBigDecimal();
-  }
-
-  set amountOut(value: BigDecimal) {
-    this.set("amountOut", Value.fromBigDecimal(value));
+  set amount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromBigInt(value as BigInt));
+    }
   }
 }

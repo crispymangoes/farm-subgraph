@@ -1,6 +1,5 @@
 type Farmer @entity {
   id: ID!
   user: Bytes!
-  amountIn: BigDecimal!
-  amountOut: BigDecimal!
+  amount: BigInt
 }

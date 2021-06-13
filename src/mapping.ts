@@ -1,4 +1,3 @@
-import { BigDecimal } from '@graphprotocol/graph-ts'
 import { Deposit, Withdraw } from '../generated/Gravity/GFI_Farm'
 import { Farmer } from '../generated/schema'
 
@@ -9,7 +8,12 @@ export function handleDeposit(event: Deposit): void {
     farmer = new Farmer(id)
   }
   farmer.user = event.params.user
-  farmer.amountIn = new BigDecimal(event.params.amount)
+  if (farmer.amount == null) {
+    farmer.amount = event.params.amount
+  }
+  else {
+    farmer.amount = farmer.amount.plus(event.params.amount)
+  }
   farmer.save()
 }
 
@@ -20,6 +24,8 @@ export function handleWithdraw(event: Withdraw): void {
     farmer = new Farmer(id)
   }
   farmer.user = event.params.user
-  farmer.amountOut = new BigDecimal(event.params.amount)
+  if (farmer.amount != null) {
+    farmer.amount = farmer.amount.minus(event.params.amount)
+  }
   farmer.save()
 }
